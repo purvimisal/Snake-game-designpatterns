@@ -1,0 +1,5 @@
+*.class
+*.ctxt
+
+/Snake Game/*.class
+/Snake Game/*.ctxt
