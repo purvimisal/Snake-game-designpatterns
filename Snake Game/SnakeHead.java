@@ -110,6 +110,77 @@ public class SnakeHead extends Actor implements IFoodPublisher, IScoreRegister {
             // Greenfoot.playSound("jump.mp3");
         }
     }
+    // Function to check if facing edge of the world up, down, left or right.
+    private boolean touchingEdge() {
+        switch (getRotation()) {
+        case UP:
+            return getY() == 0;
+        case RIGHT:
+            return getX() == getWorld().getWidth() - 1;
+        case DOWN:
+            return getY() == getWorld().getHeight() - 1;
+        case LEFT:
+            return getX() == 0;
+        }
+        return false;
+    }
 
+    public void crawl() {
+        if (++counter == SPEED) {
+            
+            getWorld().addObject(new SnakeBody(applesConsumed * SPEED), getX(), getY());
+            move(1);
+            counter = 0;
+        }
+
+        if (Greenfoot.isKeyDown("up") && getRotation() != DOWN) {
+            setRotation(UP);
+        }
+
+        if (Greenfoot.isKeyDown("right") && getRotation() != LEFT) {
+            setRotation(RIGHT);
+        }
+
+        if (Greenfoot.isKeyDown("down") && getRotation() != UP) {
+            setRotation(DOWN);
+        }
+
+        if (Greenfoot.isKeyDown("left") && getRotation() != RIGHT) {
+            setRotation(LEFT);
+        }
+
+    }
+
+    /**
+     * 
+     * Registering levelcontroller as observer
+     * 
+     * @param obj Observer
+     */
+    public void registerObserver(IScoreObserver observer) {
+        
+        this.observer = observer;
+    }
+
+    @Override
+    public void notifyController() {
+        this.observer.changeState(applesConsumed);
+        
+    }
+    
+    public void gameover(){
+       GameOver.endGame();
+       World world = getWorld();
+       
+       // if (world != null) {
+           // world.removeObjects(world.getObjects(null));
+        // }
+        JOptionPane.showMessageDialog(new JInternalFrame(), "GAME OVER","Oops!", JOptionPane.INFORMATION_MESSAGE);
+        // GreenfootImage bg = new GreenfootImage("gameover.jpg");
+        // System.out.print("print this:" +world.getWidth()+ world.getHeight());
+        // // bg.scale(world.getWidth(), world.getHeight());
+        // world.setBackground(bg);
+        Greenfoot.setWorld(new MyWorld());
+    }
 }
     
