@@ -1,29 +1,33 @@
-import greenfoot.*; 
+import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
+/**
+ * This part of the code makes up and adds to the body of the snake.
+ * 
+ */
 public class SnakeBody extends Actor
 {
-   private int age = 0; // track age of snake piece.
-   private int lifeSpan; // restriction on how low snake gets
+   private int age = 0; //Allows program to track age of snake piece.
+   private int lifeSpan; //Puts a limit on how big the snake can get.
    
-   public SnakeBody(int lifeSpan) // adds block to body 
+   public SnakeBody(int lifeSpan) // This function simply generates another black block to be used as a SnakeBody.
    {
-	//   GreenfootImage drawedImage = new GreenfootImage("/Users/anuragpatro/Downloads/dummy-master/images/snakeHead.jpg");
-       GreenfootImage img = new GreenfootImage(20,20); //create new image with 20x20 size.
+    //   GreenfootImage drawedImage = new GreenfootImage("/Users/anuragpatro/Downloads/dummy-master/images/snakeHead.jpg");
+       GreenfootImage img = new GreenfootImage(20,20); //Create a new image with 20x20 as the size.
        img.setColor(Color.GRAY); //set SnakeBody colour
-       img.fill(); 
-       setImage(img); 
-       
-       this.lifeSpan = lifeSpan;
+       img.fill(); //Fill the block.
+       setImage(img); //Save our changes.
+       this.lifeSpan = lifeSpan; //Refers to this objects property.
    }
    
    
     public void act() 
     {
-        if(age == lifeSpan){ // when lifespan reached
-            getWorld().removeObject(this); //remove snake from world
+        if(age == lifeSpan){ //Check if lifespan is reached.
+            getWorld().removeObject(this); //Remove this object from the world.
         }
-        age++; // increment age after block added to body
-      
-    }    
-    
+        age++; //Add to age once SnakeBody is added on.
+    }
+    public void reduceLength() {
+        age = (age*2)/3;
+    }
 }
