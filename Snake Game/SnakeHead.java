@@ -172,6 +172,6 @@ public class SnakeHead extends Actor implements IFoodPublisher {
 		// System.out.print("print this:" +world.getWidth()+ world.getHeight());
 		// // bg.scale(world.getWidth(), world.getHeight());
 		// world.setBackground(bg);
-		Greenfoot.setWorld(new MyWorld());
+		Greenfoot.setWorld(new SelectionScreen());
 	}
 }
