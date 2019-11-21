@@ -7,7 +7,7 @@ public class ScoreCard extends Actor implements IScoreRegister {
 
 	public void updateScoreCard() {
 
-		GreenfootImage img = new GreenfootImage("Score: " + currentScore, 30, Color.BLACK, new Color(0, 0, 0, 0));
+		GreenfootImage img = new GreenfootImage("Score: " + currentScore, 22, Color.BLACK, new Color(0, 0, 0, 0));
 		img.setFont(new Font("OptimusPrinceps", false, false, currentScore));
 		setImage(img);
 	}
