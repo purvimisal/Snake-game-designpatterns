@@ -1,18 +1,26 @@
-import greenfoot.*; 
-public class FoodFactory extends Creators{
+import java.util.Random;
 
-	Integer randomNumber=0;
-	public Actor getItem() {
-		
-		randomNumber++;
-		if(randomNumber%2 == 0) {
-			return new Apple();
-		}
-		else {
-			return new Pizza();
-		}
-		
-		
+import greenfoot.*;
+
+public class FoodFactory extends Creators {
+
+	Integer randomNumber = 0;
+	Random randomGenerator;
+
+	FoodFactory(){
+		randomGenerator = new Random();
 	}
+	public Actor getItem() {
 
+		randomNumber = randomGenerator.nextInt(10);
+		
+		if (randomNumber % 3 == 0) {
+			return new Burger();
+		} else if (randomNumber % 3 == 1) {
+			return new Pizza();
+		} else {
+			return new Fries();
+
+		}
+	}
 }

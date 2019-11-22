@@ -8,7 +8,7 @@ public class PowerupFactory extends Creators
     	if(randomNumber%2 == 0) {
     	    return new Spider();
     	} else { 
-    	    return new Spider();
+    	    return new Mushroom();
     	}
     }
 }

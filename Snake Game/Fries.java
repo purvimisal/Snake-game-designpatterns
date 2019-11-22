@@ -1,18 +1,18 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Write a description of class Pizza here.
+ * Write a description of class Fries here.
  * 
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Pizza extends Food
+public class Fries extends Food
 {
     /**
-     * Act - do whatever the Pizza wants to do. This method is called whenever
+     * Act - do whatever the Fries wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
-    public Pizza() {
+    public Fries() {
         getImage().scale(30, 30);
     }
     public void act() 
