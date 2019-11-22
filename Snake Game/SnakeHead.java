@@ -65,10 +65,8 @@ public class SnakeHead extends Actor implements IFoodPublisher {
 		if (!GameOver.isGameOver()) {
 			if (isTouching(Food.class)) {
 				removeTouching(Food.class);
-
 				foodConsumed++;
 				notifyListner();
-
 				Greenfoot.playSound("1.mp3");
 			}
 
@@ -80,7 +78,7 @@ public class SnakeHead extends Actor implements IFoodPublisher {
 			if (isTouching(Powerup.class)) {
 				Greenfoot.playSound("power.mp3");
 				removeTouching(Powerup.class);
-				foodConsumed = (foodConsumed * 2) / 3;
+				foodConsumed = Math.min((foodConsumed * 2)/3 , foodConsumed - 3);
 
 			}
 			if (isTouching(Obstacle.class)) {

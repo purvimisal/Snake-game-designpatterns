@@ -7,8 +7,8 @@ public class Level3 implements Ilevel {
     int powerUpTime;
 
     public Level3(LevelController controller) {
-        this.powerUpTime = 10;
-        this.obstacleTime = 12;
+        this.powerUpTime = 15;
+        this.obstacleTime = 11;
         this.speed = 6;
         this.controller = controller;
     }

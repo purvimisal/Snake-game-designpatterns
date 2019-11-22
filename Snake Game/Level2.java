@@ -9,8 +9,8 @@ public class Level2 implements Ilevel {
 	
 	public Level2(LevelController controller) {
 		this.controller = controller;
-		this.obstacleTime = 8;
-		this.powerUpTime = 10;
+		this.obstacleTime = 9;
+		this.powerUpTime = 16;
 		this.speed = 7;
 	}
 
