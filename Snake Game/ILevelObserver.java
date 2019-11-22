@@ -6,5 +6,5 @@
  */
 public interface ILevelObserver  
 {
-    public void update(int obstacleInterval, int powerUpInterval);
+    public void update(int obstacleInterval, int powerUpInterval,int speed);
 }

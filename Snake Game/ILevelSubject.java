@@ -10,5 +10,5 @@ public interface ILevelSubject
      
      public void detach(ILevelObserver ob);
      
-     public void notifyObservers(int obstacleInterval, int powerUpInterval);
+     public void notifyObservers(int obstacleInterval, int powerUpInterval,int speed);
 }
