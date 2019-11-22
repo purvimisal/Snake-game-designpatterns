@@ -10,7 +10,7 @@ import javafx.util.Pair;
  */
 public class SelectionScreen extends World
 {
-    List<Pair<String, String>> cities;
+    List<ICities> cities;
     int index = 0;
     /**
      * Constructor for objects of class SelectionScreen.
@@ -19,11 +19,11 @@ public class SelectionScreen extends World
     public SelectionScreen()
     {            
         super(600, 400, 1); 
-        cities = new ArrayList();
-        cities.add(new Pair<>("alaska.gif", "Alaska"));
-        cities.add(new Pair<>("utah.gif","Utah"));
-        cities.add(new Pair<>("bangalore.gif","Bangalore"));
-        addObject(new City(cities.get(index).getKey()), 250,250);
+        cities = (List<ICities>) new ArrayList();
+        cities.add(new Alaska("alaska.gif", "Alaska"));
+        cities.add(new Utah("utah.gif","Utah"));
+        cities.add(new Bangalore("bangalore.gif","Bangalore"));
+        addObject(new City(cities.get(index).getImage()), 300,200);
         addObject(new Label("Alaska",50),278,25);
     }
     public void remove(){
@@ -35,20 +35,20 @@ public class SelectionScreen extends World
             if(index < 2)
             {
                 remove();
-                addObject(new Label(cities.get(++index).getValue(),50),278,25);
-                addObject(new City(cities.get(index).getKey()), 250,250);
+                addObject(new Label(cities.get(++index).getName(),50),278,25);
+                addObject(new City(cities.get(index).getImage()), 300,200);
             }
         }
         else if(Greenfoot.isKeyDown("left")){
             
             if(index > 0){
             remove();
-            addObject(new Label(cities.get(--index).getValue(),50),278,25);
-            addObject(new City(cities.get(index).getKey()), 250,250);
+            addObject(new Label(cities.get(--index).getName(),50),278,25);
+            addObject(new City(cities.get(index).getImage()), 300,200);
         }
         }
         else if(Greenfoot.isKeyDown("enter")){
-            Greenfoot.setWorld(new MyWorld(cities.get(index).getValue()));
+            Greenfoot.setWorld(new MyWorld(cities.get(index).getName()));
         }
         
     }
