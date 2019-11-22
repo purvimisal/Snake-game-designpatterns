@@ -12,8 +12,8 @@ public class SnakeBody extends Actor
    public SnakeBody(int lifeSpan) // This function simply generates another black block to be used as a SnakeBody.
    {
     //   GreenfootImage drawedImage = new GreenfootImage("/Users/anuragpatro/Downloads/dummy-master/images/snakeHead.jpg");
-       GreenfootImage img = new GreenfootImage(20,20); //Create a new image with 20x20 as the size.
-       img.setColor(Color.GRAY); //set SnakeBody colour
+	   GreenfootImage img = new GreenfootImage(14,14); //Create a new image with 20x20 as the size.
+       img.setColor(new Color(72,120,238));  //set SnakeBody colour
        img.fill(); //Fill the block.
        setImage(img); //Save our changes.
        this.lifeSpan = lifeSpan; //Refers to this objects property.
