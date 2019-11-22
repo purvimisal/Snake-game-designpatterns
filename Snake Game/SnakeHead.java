@@ -11,6 +11,7 @@ public class SnakeHead extends Actor implements IFoodPublisher {
 
 	private int SPEED;
 	private int counter = 0;
+	private int snakeLength =0;
 	private int foodConsumed = 0;
 
 	private IScoreObserver observer;
@@ -65,8 +66,10 @@ public class SnakeHead extends Actor implements IFoodPublisher {
 		if (!GameOver.isGameOver()) {
 			if (isTouching(Food.class)) {
 				removeTouching(Food.class);
+				snakeLength++;
 				foodConsumed++;
 				notifyListner();
+
 				Greenfoot.playSound("1.mp3");
 			}
 
@@ -78,7 +81,7 @@ public class SnakeHead extends Actor implements IFoodPublisher {
 			if (isTouching(Powerup.class)) {
 				Greenfoot.playSound("power.mp3");
 				removeTouching(Powerup.class);
-				foodConsumed = Math.min((foodConsumed * 2)/3 , foodConsumed - 3);
+				snakeLength = (snakeLength * 2) / 3;
 
 			}
 			if (isTouching(Obstacle.class)) {
@@ -111,7 +114,7 @@ public class SnakeHead extends Actor implements IFoodPublisher {
 
 	public void crawl() {
 		if (++counter == SPEED) {
-			getWorld().addObject(new SnakeBody(foodConsumed * SPEED), getX(), getY());
+			getWorld().addObject(new SnakeBody(snakeLength * SPEED), getX(), getY());
 			move(1);
 			counter = 0;
 		}
