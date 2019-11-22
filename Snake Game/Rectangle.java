@@ -9,10 +9,10 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class Rectangle extends Obstacle
 {
     public Rectangle() {
-         int height = Greenfoot.getRandomNumber(150);
-         int width = Greenfoot.getRandomNumber(150);
-         if(height < 20) height = 20;
-         if(width  < 20) width = 20;
+         int height = Greenfoot.getRandomNumber(120);
+         int width = Greenfoot.getRandomNumber(120);
+         if(height < 50) height = 50;
+         if(width  < 50) width = 50;
          GreenfootImage image = new GreenfootImage(width, height);
          image.setColor(Color.RED);
          image.fill();
@@ -21,6 +21,10 @@ public class Rectangle extends Obstacle
    
     public void act() 
     {
-        // Add your action code here.
+        int num = Greenfoot.getRandomNumber(50);
+        if(num%2==0){
+        turn(5);
+    }
+        
     }    
 }
