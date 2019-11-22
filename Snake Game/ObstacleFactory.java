@@ -8,7 +8,7 @@ public class ObstacleFactory extends Creators
     	if(randomNumber%2 == 0) {
     	    return new Rectangle();
     	} else { 
-    	    return new Rectangle();
+    	    return new Danger();
     	}
     }
 }
