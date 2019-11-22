@@ -1,23 +1,24 @@
 import javax.swing.JOptionPane;
 import javax.swing.JInternalFrame;
 
-public class Level1 implements Ilevel {
+public class Level4 implements Ilevel {
 
 	LevelController controller;
 	int obstacleTime;
 	int powerUpTime;
 	int speed;
-	public Level1(LevelController controller) {
-		this.obstacleTime = 4;
-		this.powerUpTime = 7;
+
+	public Level4(LevelController controller) {
+		this.obstacleTime = 13;
+		this.powerUpTime = 8;
+		this.speed = 5;
 		this.controller = controller;
-		this.speed = 8;
 	}
 
 	@Override
 	public void changeState() {
 
-		controller.changeToLevel2();
+		controller.changeToLevel5();
 	}
 
 	@Override

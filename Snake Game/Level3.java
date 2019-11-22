@@ -1,32 +1,36 @@
 
 public class Level3 implements Ilevel {
 
-	LevelController controller;
+    LevelController controller;
+    int speed;
+    int obstacleTime;
+    int powerUpTime;
 
-	int obstacleTime;
-	int powerUpTime;
+    public Level3(LevelController controller) {
+        this.powerUpTime = 10;
+        this.obstacleTime = 12;
+        this.speed = 6;
+        this.controller = controller;
+    }
 
-	public Level3(LevelController controller) {
-		this.powerUpTime = 7;
-		this.obstacleTime = 35;
-		this.controller = controller;
-	}
+    public void changeState() {
 
-	public void changeState() {
+        controller.changeToLevel4();
+    }
 
-		controller.endGame();
-	}
+    @Override
+    public int getObstacleTime() {
 
-	@Override
-	public int getObstacleTime() {
+        return obstacleTime;
+    }
 
-		return obstacleTime;
-	}
+    @Override
+    public int getPowerUpTime() {
 
-	@Override
-	public int getPowerUpTime() {
-
-		return powerUpTime;
-	}
+        return powerUpTime;
+    }
+    public int getCurrentSpeed(){
+        return speed;
+    }
 
 }
