@@ -6,15 +6,6 @@ import java.net.URL;
 import java.util.List;
 import java.util.ArrayList;
 
-/**
- * This class can be used to read animated gif image files and extract the individual
- * images of the animation sequence.
- * 
- * @author Michael Berry
- * @author Neil Brown
- * 
- * Copyright (c) 2011,2013,2014,2018
- */
 public class GifImage
 {
     /** The images used in the animation. */
@@ -146,33 +137,6 @@ public class GifImage
         }
     }
     
-    /**
-     * Class GifDecoder - Decodes a GIF file into one or more frames. <br><br>
-     * 
-     * <i>I (Michael) edited this slightly on 10/09/08 to bring class up to date with generics and therefore remove warnings.
-     * Also edited so that resources are grabbed from the jar file and not externally, so no security exceptions.</i>
-     * <br><br>
-     * <pre>
-     *  Example:
-     *     GifDecoder d = new GifDecoder();
-     *     d.read(&quot;sample.gif&quot;);
-     *     int n = d.getFrameCount();
-     *     for (int i = 0; i &lt; n; i++) {
-     *        BufferedImage frame = d.getFrame(i);  // frame i
-     *        int t = d.getDelay(i);  // display duration of frame in milliseconds
-     *        // do something with frame
-     *     }
-     * </pre>
-     * 
-     * No copyright asserted on the source code of this class. May be used for any
-     * purpose, however, refer to the Unisys LZW patent for any additional
-     * restrictions. Please forward any corrections to kweiner@fmsware.com.
-     * 
-     * @author Kevin Weiner, FM Software; LZW decoder adapted from John Cristy's
-     *         ImageMagick.
-     * @version 1.03 November 2003
-     * 
-     */
     private class GifDecoder
     {
         /**
