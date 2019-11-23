@@ -4,23 +4,40 @@ import greenfoot.*;
 
 public class FoodFactory extends Creators {
 
-	Integer randomNumber = 0;
-	Random randomGenerator;
+    Integer randomNumber = 0;
+    Random randomGenerator;
+    
 
-	FoodFactory(){
-		randomGenerator = new Random();
-	}
-	public Actor getItem() {
+    ICities city;
 
-		randomNumber = randomGenerator.nextInt(10);
-		
-		if (randomNumber % 3 == 0) {
-			return new Burger();
-		} else if (randomNumber % 3 == 1) {
-			return new Pizza();
-		} else {
-			return new Fries();
+    FoodFactory(ICities city){
+        randomGenerator = new Random();
+        this.city = city;
+    }
+    public Actor getItem() {
 
-		}
-	}
+        randomNumber = randomGenerator.nextInt(10);
+        
+        int num = randomNumber % city.getFood().size();
+        final String pizza = Pizza.class.getName();
+        final String burger = Burger.class.getName();
+        final String fries = Fries.class.getName();
+        
+        
+        switch(city.getFood().get(num)){
+                case "pizza": return new Pizza();
+                
+                
+                case "burger" : return new Burger();
+                
+                case "fries":return new Fries();
+                
+             
+          
+          
+          }
+        return null;
+        
+        
+    }
 }
