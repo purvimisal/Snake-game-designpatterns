@@ -1,13 +1,16 @@
-
+import java.util.*;
 public class Bangalore implements ICities{
 	
 
 	private String image;
 	private String name;
+	private List<String> foods;
 
 	public Bangalore(String image, String name) {
 		this.image = image;
 		this.name = name;
+			foods = new ArrayList();
+		foods.add("burger");
 	}
 
 	@Override
@@ -22,4 +25,8 @@ public class Bangalore implements ICities{
 		return image;
 	}
 
+	@Override
+	public List getFood(){
+		return foods;
+	}
 }
