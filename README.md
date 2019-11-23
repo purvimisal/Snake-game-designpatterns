@@ -75,11 +75,13 @@ We tracked issues in project dashboard as:
 ![BurndownChart](https://github.com/nguyensjsu/fa19-202-gangofive/blob/master/images/burndown.PNG)
 
 
+### [Design Notes](https://github.com/nguyensjsu/fa19-202-gangofive/blob/master/DesignNotes.md)
+
 ### Individual Contributions
 * Shailesh - Factory pattern, Food, Obstacles and Powerups, Video editing
 * Anurag - State pattern, Levels, Observer pattern for level change.
-* Faraaz - Strategy pattern,Decorator pattern and City selection.
-* Purvi - Game board, Leaderboard.
+* Faraaz - Strategy pattern, Observer pattern and City selection.
+* Purvi - Game board, Leaderboard, Decorator for leaderboard.
 * Akshay - Scoreboard, Observer pattern for score.
 
 
