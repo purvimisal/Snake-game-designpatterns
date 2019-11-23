@@ -9,7 +9,7 @@ public class Level5 implements Ilevel {
 	int speed;
 
 	public Level5(LevelController controller) {
-		this.obstacleTime = 15;
+		this.obstacleTime = 12;
 		this.powerUpTime = 13;
 		this.speed = 3;
 		this.controller = controller;
