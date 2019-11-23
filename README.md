@@ -29,19 +29,19 @@ The world is being invaded by Food monsters and we need a superhero to save us!
 Enter-- Super Hero Snake!!!! He is here to eat all the food monsters and save the world from its DOOM!
 
 ### Select a city to save
-![Menu](https://github.com/nguyensjsu/fa19-202-gangofive/reports/images/citychoice.png)
+![Menu](https://github.com/nguyensjsu/fa19-202-gangofive/tree/master/images/citychoice.png)
 
 ### Avoid obstacles and eat all the food
-![Game Play](https://github.com/nguyensjsu/fa19-202-gangofive/reports/images/gameplay.png)
+![Game Play](https://github.com/nguyensjsu/fa19-202-gangofive/tree/master/images/gameplay.png)
 
 ### Make sure our superhero doesn't bite himself
-![Game Over](https://github.com/nguyensjsu/fa19-202-gangofive/reports/images/gameover.png)
+![Game Over](https://github.com/nguyensjsu/fa19-202-gangofive/tree/master/images/gameover.png)
 
 ### Pickup powerups to lose the extra weight gained from all the junk
-![Power ups](https://github.com/nguyensjsu/fa19-202-gangofive/reports/images/powerup.png)
+![Power ups](https://github.com/nguyensjsu/fa19-202-gangofive/tree/master/images/powerup.png)
 
 ### Beat other players to be the best
-![Leaderboard](https://github.com/nguyensjsu/fa19-202-gangofive/reports/images/leaderboard.png)
+![Leaderboard](https://github.com/nguyensjsu/fa19-202-gangofive/tree/master/images/leaderboard.png)
 
 ## How we SCRUM!
 * Due to implementing an agile methodology, we were able to cruise through the game development without much difficulty.
@@ -64,7 +64,7 @@ Link to Board : https://github.com/nguyensjsu/fa19-202-gangofive/projects/1
 ![Project Dashboard](https://github.com/nguyensjsu/fa19-202-gangofive/reports/images/tasklist.png)
 
 ### [Burndown Map](https://drive.google.com/open?id=17wDf-XC1Z2RsjCP6MO7xHkV1n7OW8417)
-![BurndownChart](https://github.com/nguyensjsu/fa19-202-gangofive/reports/images/burndown.png)
+![BurndownChart](https://github.com/nguyensjsu/fa19-202-gangofive/tree/master/images/burndown.png)
 
 
 ### Individual Contributions
