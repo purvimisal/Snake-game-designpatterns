@@ -78,7 +78,7 @@ We tracked issues in project dashboard as:
 ### Individual Contributions
 * Shailesh - Factory pattern, Food, Obstacles and Powerups.
 * Anurag - State pattern, Levels, Observer pattern for level change.
-* Faraaz - Strategy pattern, City selection.
+* Faraaz - Strategy pattern,Decorator pattern and City selection.
 * Purvi - Game board, Leaderboard.
 * Akshay - Scoreboard, Observer pattern for score.
 
