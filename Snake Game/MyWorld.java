@@ -15,7 +15,7 @@ public class MyWorld extends World implements IFoodListner, ILevelObserver {
     Creators obstacleFactory = new ObstacleFactory();
     Creators powerupFactory = new PowerupFactory();
     LevelController controller;
-    Integer minimumRandomNumber = 3;
+    Integer minimumRandomNumber = 6;
     Integer horizontalRandomNumber = 2;
     int timer;
     int obstacleSpawnTime = 13;
@@ -30,26 +30,6 @@ public class MyWorld extends World implements IFoodListner, ILevelObserver {
         return controller;
     }
 
-    /**
-     * Constructor for objects of class MyWorld.
-     * 
-     */
-    // public MyWorld() {
-    // super(30, 30, 20, false);
-    // setBackgroundGrid();
-    // addSnakeHead();
-    // int x = Greenfoot.getRandomNumber(getWidth());
-    // int y = Greenfoot.getRandomNumber(getHeight());
-    // addObject(foodFactory.sendItem(), x, y);
-
-    // controller = new LevelController();
-    // scoreCard = new ScoreCard();
-    // controller.attach(this);
-    // scoreCard.registerObserver(controller);
-    // controller.changeToLevel0();
-    // timer = 0;
-    // addScoreCard();
-    // }
     public MyWorld(ICities city) {
         super(30, 30, 20, false);
         this.city = city;
@@ -106,7 +86,7 @@ public class MyWorld extends World implements IFoodListner, ILevelObserver {
 
     public void addFoodToWorld() {
         int x = horizontalRandomNumber + Greenfoot.getRandomNumber(28);
-        int y = minimumRandomNumber + Greenfoot.getRandomNumber(24);
+        int y = minimumRandomNumber + Greenfoot.getRandomNumber(20);
         scoreCard.incrementScore(controller.getState());
         while (getObjectsAt(x, y, Obstacle.class).size() > 0 && getObjectsAt(x, y, Powerup.class).size() > 0) {
             x = horizontalRandomNumber + Greenfoot.getRandomNumber(28);
@@ -118,7 +98,7 @@ public class MyWorld extends World implements IFoodListner, ILevelObserver {
 
     public void addObstacleToWorld() {
         int x = horizontalRandomNumber + Greenfoot.getRandomNumber(26);
-        int y = minimumRandomNumber + Greenfoot.getRandomNumber(24);
+        int y = minimumRandomNumber + Greenfoot.getRandomNumber(20);
 
         while (getObjectsAt(x, y, Food.class).size() > 0 && getObjectsAt(x, y, Powerup.class).size() > 0
                 && Math.abs(getObjects(SnakeHead.class).get(0).getX() - x) < 30) {
@@ -130,7 +110,7 @@ public class MyWorld extends World implements IFoodListner, ILevelObserver {
 
     public void addPowerupToWorld() {
         int x = horizontalRandomNumber + Greenfoot.getRandomNumber(26);
-        int y = minimumRandomNumber + Greenfoot.getRandomNumber(25);
+        int y = minimumRandomNumber + Greenfoot.getRandomNumber(20);
         while (getObjectsAt(x, y, Obstacle.class).size() > 0 && getObjectsAt(x, y, Food.class).size() > 0) {
             x = horizontalRandomNumber + Greenfoot.getRandomNumber(28);
             y = minimumRandomNumber + Greenfoot.getRandomNumber(24);
