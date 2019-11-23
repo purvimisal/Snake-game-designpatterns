@@ -10,7 +10,7 @@
 - Task1: Implement Score Card
 
 ### Problems 
-- Getting comfortable with Greenfoot APIs
+- Getting comfortable with Greenfoot APIs. Issues with handling interactions between actors
 
 ### Time Spent
 - Task1: 7 hrs
