@@ -29,8 +29,6 @@
  * }
  * </pre>
  * 
- * @author Neil Brown
- * @version 1.0
  */
 public class SimpleTimer
 {
