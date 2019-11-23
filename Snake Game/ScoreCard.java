@@ -33,7 +33,7 @@ public class ScoreCard extends Actor implements IScoreRegister {
         temp.append(" ");
         this.level = temp.toString();
         updateScoreCard();
-        if (currentScore % 5 == 0) {
+        if (currentScore % 7 == 0) {
             notifyController();
         }
     }

@@ -70,7 +70,7 @@ public class MyWorld extends World implements IFoodListner, ILevelObserver {
     }
 
     public void addScoreCard() {
-        addObject(scoreCard, 4, 1);
+        addObject(scoreCard, 0, 1);
     }
 
     public int getTimer() {
