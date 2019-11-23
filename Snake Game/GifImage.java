@@ -106,23 +106,103 @@ public class GifImage {
         }
     }
 
-    private class GifFrame {
-        public GifFrame(GreenfootImage im, int del) {
-            image = im;
-            delay = del;
-        }
-
-        private GreenfootImage image;
-
-        private int delay;
-    }
+    
 
     private class GifDecoder {
 
-        private int status;
         public static final int STATUS_OK = 0;
+
+        public static final int STATUS_FORMAT_ERROR = 1;
+
+        public static final int STATUS_OPEN_ERROR = 2;
+
         private BufferedInputStream in;
+
+        private int status;
+
+        private int width; 
+
+        private int height; 
+
+        private boolean gctFlag; 
+
+        private int gctSize; 
+
+        private int loopCount = 1;
+
+        private int[] gct; 
+
+        private int[] lct; 
+
+        private int[] act; 
+
+        private int bgIndex; 
+
+        private Color bgColor; 
+
+        private Color lastBgColor; 
+
+        private int pixelAspect; 
+
+        private boolean lctFlag; 
+
+        private boolean interlace; 
+
+        private int lctSize; 
+
+        private int ix, iy, iw, ih; 
+
+        private Rectangle lastRect; 
+
+        private GreenfootImage image; 
+
+        private GreenfootImage lastImage; 
+
+        private byte[] block = new byte[256]; 
+
+        private int blockSize = 0; 
+
+        private int dispose = 0;
+
+        private int lastDispose = 0;
+
+        private boolean transparency = false;
+
+        private int delay = 0; 
+
+        private int transIndex; 
+
+        private static final int MaxStackSize = 4096;
+
+        private short[] prefix;
+
+        private byte[] suffix;
+
+        private byte[] pixelStack;
+
+        private byte[] pixels;
+
+        private ArrayList<GifFrame> frames; 
         private int frameCount;
+
+        private class GifFrame {
+            public GifFrame(GreenfootImage im, int del) {
+                image = im;
+                delay = del;
+            }
+    
+            private GreenfootImage image;
+    
+            private int delay;
+        }
+
+        private Color colorFromInt(int rgb)
+        {
+            int r = (rgb & 0xFF0000) >> 16;
+            int g = (rgb & 0xFF00) >> 8;
+            int b = (rgb & 0xFF);
+            return new Color(r,g,b);
+        }
 
         public int getDelay(int n) {
             //
@@ -346,6 +426,10 @@ public class GifImage {
             return im;
         }
 
+        public int[] getFrameSize() {
+            return new int[]{width, height};
+        }
+
 
         protected int readBlock() {
             blockSize = read();
@@ -424,6 +508,29 @@ public class GifImage {
             }
         }
 
+        public int read(InputStream is) {
+            init();
+            if (is != null) {
+                if (!(is instanceof BufferedInputStream))
+                    is = new BufferedInputStream(is);
+                in = (BufferedInputStream) is;
+                readHeader();
+                if (!err()) {
+                    readContents();
+                    if (frameCount < 0) {
+                        status = STATUS_FORMAT_ERROR;
+                    }
+                }
+            } else {
+                status = STATUS_OPEN_ERROR;
+            }
+            try {
+                is.close();
+            } catch (IOException e) {
+            }
+            return status;
+        }
+
         public int read(BufferedInputStream is) {
             init();
             if (is != null) {
@@ -448,6 +555,95 @@ public class GifImage {
         public int getFrameCount() {
             return frameCount;
         }
+
+        public GreenfootImage getImage() {
+            return getFrame(0);
+        }
+
+        public int getLoopCount() {
+            return loopCount;
+        }
+
+        protected void setPixels() {
+            // fill in starting image contents based on last image's dispose code
+            if (lastDispose > 0) {
+                if (lastDispose == 3) {
+                    // use image before last
+                    int n = frameCount - 2;
+                    if (n > 0) {
+                        lastImage = getFrame(n - 1);
+                    } else {
+                        lastImage = null;
+                    }
+                }
+
+                if (lastImage != null) {
+                    image.clear();
+                    image.drawImage(lastImage, 0, 0);
+                    
+                    // copy pixels
+
+                    if (lastDispose == 2) {
+                        // fill last image rect area with background color
+                        Color c = null;
+                        if (transparency) {
+                            c = new Color(0, 0, 0, 0); // assume background is transparent
+                        } else {
+                            c = lastBgColor; // use given background color
+                        }
+                        for (int x = 0; x < lastRect.width; x++)
+                        {
+                            for (int y = 0; y < lastRect.height; y++)
+                            {
+                                image.setColorAt(lastRect.x + x, lastRect.y + y, c);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // copy each source line to the appropriate place in the destination
+            int pass = 1;
+            int inc = 8;
+            int iline = 0;
+            for (int i = 0; i < ih; i++) {
+                int line = i;
+                if (interlace) {
+                    if (iline >= ih) {
+                        pass++;
+                        switch (pass) {
+                        case 2:
+                            iline = 4;
+                            break;
+                        case 3:
+                            iline = 2;
+                            inc = 4;
+                            break;
+                        case 4:
+                            iline = 1;
+                            inc = 2;
+                        }
+                    }
+                    line = iline;
+                    iline += inc;
+                }
+                line += iy;
+                if (line < height) {
+                    int k = line * width;
+                    int dlim = Math.min(ix + iw, width);
+                    int sx = i * iw;
+                    
+                    for (int dx = ix; dx < dlim; dx++) {
+                        int index = ((int) pixels[sx++]) & 0xff;
+                        int c = act[index];
+                        if (c != 0) {
+                            image.setColorAt(dx, line, colorFromInt(c));
+                        }
+                    }
+                }
+            }
+        }
+
 
         protected void init() {
             status = STATUS_OK;
@@ -474,9 +670,7 @@ public class GifImage {
             }
         }
 
-        protected boolean err() {
-            return status != STATUS_OK;
-        }
+      
 
         protected void readContents() {
             // read GIF file content blocks
