@@ -1,5 +1,6 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
+// TODO: Auto-generated Javadoc
 /**
  * Write a description of class Danger here.
  * 

@@ -1,5 +1,6 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
+// TODO: Auto-generated Javadoc
 /**
  * Write a description of class SFSelectionScreen here.
  * 
@@ -8,8 +9,15 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class City extends Actor
 {
+    
+    /** The city. */
     GifImage city;
     
+    /**
+     * Instantiates a new city.
+     *
+     * @param file the file
+     */
     public City(String file){
         
         city = new GifImage(file);

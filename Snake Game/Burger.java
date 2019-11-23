@@ -1,5 +1,6 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
+// TODO: Auto-generated Javadoc
 /**
  * Write a description of class Burger here.
  * 
@@ -15,6 +16,10 @@ public class Burger extends Food
     public Burger() {
         getImage().scale(30, 30);
     }
+    
+    /**
+     * Act.
+     */
     public void act() 
     {
         // Add your action code here.

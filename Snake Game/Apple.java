@@ -1,5 +1,6 @@
 import greenfoot.*;  
 
+// TODO: Auto-generated Javadoc
 /**
  * Write a description of class Apple here.
  * 
@@ -8,7 +9,13 @@ import greenfoot.*;
  */
 public class Apple extends Food
 {
+    
+    /** The apple consumed. */
     public static int appleConsumed=0;
+    
+    /**
+     * Instantiates a new apple.
+     */
     public Apple(){
     	
     }
