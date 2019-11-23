@@ -14,7 +14,7 @@ GangOFive
 * [Purvi](https://github.com/purvimisal)
 * [Akshay](https://github.com/itselavia)
 
-## SUPERHERO SNAKE
+## SUPERHERO SNAKE       [Watch Trailer](https://www.youtube.com/watch?v=MsHCmCgXEHI)
 
 This project is a re-implementation of the classic Snake game. 
 We have added extra functionalities and leveraged relevant design patterns to our game.
@@ -76,7 +76,7 @@ We tracked issues in project dashboard as:
 
 
 ### Individual Contributions
-* Shailesh - Factory pattern, Food, Obstacles and Powerups.
+* Shailesh - Factory pattern, Food, Obstacles and Powerups, Video editing
 * Anurag - State pattern, Levels, Observer pattern for level change.
 * Faraaz - Strategy pattern,Decorator pattern and City selection.
 * Purvi - Game board, Leaderboard.
