@@ -21,6 +21,8 @@ The below diagram displays the various states of the game.
 
 ## Design Notes
 The following design patterns were implemented :
+
+
 1)Observer : The observer pattern was implemented for acheving multiple functionalities.  
 
 Here SnakeHead is the publisher and MyWorld is the listener. Everytime the snake eats a food object, SnakeHead notifies MyWorld about this event so MyWorld can do the required operations.
