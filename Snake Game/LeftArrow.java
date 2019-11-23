@@ -1,5 +1,6 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
+// TODO: Auto-generated Javadoc
 /**
  * Write a description of class RightArrow here.
  * 
@@ -8,8 +9,16 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class LeftArrow extends Actor
 {
+    
+    /** The img. */
     GreenfootImage img ;
+    
+    /** The timer. */
     private SimpleTimer timer;
+    
+    /**
+     * Instantiates a new left arrow.
+     */
     public LeftArrow(){
         timer = new SimpleTimer();
         timer.mark();

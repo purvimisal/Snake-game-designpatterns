@@ -1,3 +1,4 @@
+// TODO: Auto-generated Javadoc
 /**
  * Write a description of class IFoodObserver here.
  * 
@@ -7,6 +8,9 @@
 public interface IFoodListner  
 {
 
+    /**
+     * Adds the food to world.
+     */
     void addFoodToWorld() ;
 
 }
