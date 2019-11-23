@@ -1,6 +1,7 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 
+// TODO: Auto-generated Javadoc
 /**
  * A Label class that allows you to display a textual value on screen.
  * 
@@ -13,17 +14,31 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Label extends Actor
 {
+    
+    /** The value. */
     private String value;
+    
+    /** The font size. */
     private int fontSize;
+    
+    /** The line color. */
     private Color lineColor = Color.BLACK;
+    
+    /** The fill color. */
     private Color fillColor = Color.WHITE;
+    
+    /** The timer. */
     private SimpleTimer timer;
     
+    /** The Constant transparent. */
     private static final Color transparent = new Color(0,0,0,0);
 
     
     /**
-     * Create a new label, initialise it with the int value to be shown and the font size 
+     * Create a new label, initialise it with the int value to be shown and the font size.
+     *
+     * @param value the value
+     * @param fontSize the font size
      */
     public Label(int value, int fontSize)
     {
@@ -33,7 +48,10 @@ public class Label extends Actor
     }
     
     /**
-     * Create a new label, initialise it with the needed text and the font size 
+     * Create a new label, initialise it with the needed text and the font size.
+     *
+     * @param value the value
+     * @param fontSize the font size
      */
     public Label(String value, int fontSize)
     {
@@ -45,8 +63,8 @@ public class Label extends Actor
     }
 
     /**
-     * Sets the value  as text
-     * 
+     * Sets the value  as text.
+     *
      * @param value the text to be show
      */
     public void setValue(String value)
@@ -56,8 +74,8 @@ public class Label extends Actor
     }
     
     /**
-     * Sets the value as integer
-     * 
+     * Sets the value as integer.
+     *
      * @param value the value to be show
      */
     public void setValue(int value)
@@ -67,8 +85,8 @@ public class Label extends Actor
     }
     
     /**
-     * Sets the line color of the text
-     * 
+     * Sets the line color of the text.
+     *
      * @param lineColor the line color of the text
      */
     public void setLineColor(Color lineColor)
@@ -78,8 +96,8 @@ public class Label extends Actor
     }
     
     /**
-     * Sets the fill color of the text
-     * 
+     * Sets the fill color of the text.
+     *
      * @param fillColor the fill color of the text
      */
     public void setFillColor(Color fillColor)
@@ -97,6 +115,9 @@ public class Label extends Actor
         setImage(new GreenfootImage(value, fontSize, fillColor, transparent, lineColor));
     }
     
+    /**
+     * Act.
+     */
     public void act(){
         if(timer.millisElapsed() > 1000){
         this.fillColor = this.fillColor == Color.WHITE ? Color.BLACK : Color.WHITE;

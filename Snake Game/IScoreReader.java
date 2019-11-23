@@ -6,7 +6,17 @@
  */
 import java.util.*;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface IScoreReader.
+ */
 public interface IScoreReader  
 {
+    
+    /**
+     * Read file.
+     *
+     * @return the hash map
+     */
     public HashMap<String, Integer> readFile();
 }
