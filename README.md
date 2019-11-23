@@ -63,7 +63,7 @@ We tracked issues in project dashboard as:
 ![Project Dashboard](https://github.com/nguyensjsu/fa19-202-gangofive/blob/master/images/tasklist.PNG)
 
 ### [Burndown Map](https://drive.google.com/open?id=17wDf-XC1Z2RsjCP6MO7xHkV1n7OW8417)
-![BurndownChart](https://github.com/nguyensjsu/fa19-202-gangofive/tree/master/images/burndown.png)
+![BurndownChart](https://github.com/nguyensjsu/fa19-202-gangofive/blob/master/images/burndown.PNG)
 
 
 ### Individual Contributions
