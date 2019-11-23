@@ -1,11 +1,23 @@
 import greenfoot.*;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ScoreCard.
+ */
 public class ScoreCard extends Actor implements IScoreRegister {
 
+    /** The current score. */
     private int currentScore = 0;
+    
+    /** The observer. */
     private IScoreObserver observer;
+    
+    /** The level. */
     private String level = "Level : 0 ";
 
+    /**
+     * Update score card.
+     */
     public void updateScoreCard() {
         String text = "Score: " + currentScore + "              " + level;
         GreenfootImage textImage = new GreenfootImage(text, 24, new Color(0, 255, 128), new Color(0, 0, 0, 0));
@@ -18,14 +30,25 @@ public class ScoreCard extends Actor implements IScoreRegister {
         setImage(image);
     }
 
+    /**
+     * Instantiates a new score card.
+     */
     public ScoreCard() {
         updateScoreCard();
     }
 
+    /**
+     * Act.
+     */
     public void act() {
 
     }
 
+    /**
+     * Increment score.
+     *
+     * @param level the level
+     */
     public void incrementScore(String level) {
         currentScore++;
         StringBuilder temp = new StringBuilder(level);
@@ -38,12 +61,20 @@ public class ScoreCard extends Actor implements IScoreRegister {
         }
     }
 
+    /**
+     * Register observer.
+     *
+     * @param observer the observer
+     */
     @Override
     public void registerObserver(IScoreObserver observer) {
         this.observer = observer;
 
     }
 
+    /**
+     * Notify controller.
+     */
     @Override
     public void notifyController() {
 

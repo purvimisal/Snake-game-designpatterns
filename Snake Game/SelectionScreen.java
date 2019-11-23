@@ -2,6 +2,7 @@ import greenfoot.*;
 import java.util.*;
 import javafx.util.Pair;
 
+// TODO: Auto-generated Javadoc
 /**
  * Write a description of class SelectionScreen here.
  * 
@@ -10,7 +11,11 @@ import javafx.util.Pair;
  */
 public class SelectionScreen extends World
 {
+    
+    /** The cities. */
     List<ICities> cities;
+    
+    /** The index. */
     int index = 0;
     /**
      * Constructor for objects of class SelectionScreen.
@@ -28,12 +33,20 @@ public class SelectionScreen extends World
         addObject(new RightArrow(), 532,375);
         addObject(new LeftArrow(), 60,373);
     }
+    
+    /**
+     * Removes the.
+     */
     public void remove(){
         List objects = getObjects(null);
         removeObjects(objects);
         addObject(new RightArrow(), 532,375);
         addObject(new LeftArrow(), 60,373);
     }
+    
+    /**
+     * Act.
+     */
     public void act(){
         if(Greenfoot.isKeyDown("right")){
             if(index < 2)

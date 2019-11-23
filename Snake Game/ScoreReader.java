@@ -8,14 +8,23 @@
 import java.io.*;
 import java.util.*;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ScoreReader.
+ */
 public class ScoreReader implements IScoreReader {
 
     /**
-     * Constructor for objects of class ScoreReader
+     * Constructor for objects of class ScoreReader.
      */
     public ScoreReader() {
     }
 
+    /**
+     * Read file.
+     *
+     * @return the hash map
+     */
     public HashMap<String, Integer> readFile() {
         String line;
         HashMap<String, Integer> scores = new HashMap();

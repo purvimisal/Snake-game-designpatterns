@@ -1,3 +1,4 @@
+// TODO: Auto-generated Javadoc
 /**
  * A simple timer class that allows you to keep track of how much time
  * has passed between events.
@@ -33,6 +34,8 @@
  */
 public class SimpleTimer
 {
+    
+    /** The last mark. */
     private long lastMark = System.currentTimeMillis();
     
     /**
@@ -53,6 +56,8 @@ public class SimpleTimer
      * was last called.  This timer runs irrespective of Greenfoot's
      * act() cycle, so if you call it many times during the same Greenfoot frame,
      * you may well get different answers.
+     *
+     * @return the int
      */
     public int millisElapsed()
     {

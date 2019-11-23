@@ -6,13 +6,31 @@
  */
 import java.util.*;
 import greenfoot.*;
+// TODO: Auto-generated Javadoc
+
+/**
+ * The Class ScoreDecorator.
+ */
 public class ScoreDecorator 
 {
+    
+    /** The reader. */
     private IScoreReader reader;
+    
+    /**
+     * Instantiates a new score decorator.
+     *
+     * @param r the r
+     */
     public ScoreDecorator(IScoreReader r){
         reader = r;
     }
     
+    /**
+     * Decorate.
+     *
+     * @param w the w
+     */
     public void decorate(World w){
         Map<String,Integer> topTen = getTopTen(reader.readFile());
         int x = 250;
@@ -29,6 +47,12 @@ public class ScoreDecorator
        
     }
     
+    /**
+     * Gets the top ten.
+     *
+     * @param map the map
+     * @return the top ten
+     */
     public Map<String, Integer> getTopTen(HashMap<String, Integer> map) {
         Map<String, Integer> topTen = new LinkedHashMap();
         Object[] a = map.entrySet().toArray();

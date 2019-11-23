@@ -1,6 +1,7 @@
     import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
     
-    /**
+    // TODO: Auto-generated Javadoc
+/**
      * Write a description of class Spider here.
      * 
      * @author (your name) 
@@ -8,6 +9,8 @@
      */
     public class Spider extends Powerup
     {
+        
+        /** The timer. */
         int timer = 0;
         /**
          * Act - do whatever the Spider wants to do. This method is called whenever
@@ -16,6 +19,10 @@
     public Spider() {
         getImage().scale(30, 30);
     }
+    
+    /**
+     * Act.
+     */
     public void act() 
     {
         timer++;

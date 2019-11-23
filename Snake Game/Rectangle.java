@@ -1,5 +1,6 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
+// TODO: Auto-generated Javadoc
 /**
  * Write a description of class Rectangle here.
  * 
@@ -8,6 +9,10 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Rectangle extends Obstacle
 {
+    
+    /**
+     * Instantiates a new rectangle.
+     */
     public Rectangle() {
          int height = Greenfoot.getRandomNumber(120);
          int width = Greenfoot.getRandomNumber(120);
@@ -19,6 +24,9 @@ public class Rectangle extends Obstacle
          setImage(image);
     }
    
+    /**
+     * Act.
+     */
     public void act() 
     {
         int num = Greenfoot.getRandomNumber(50);

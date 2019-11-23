@@ -3,20 +3,45 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JInternalFrame;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SnakeHead.
+ */
 public class SnakeHead extends Actor implements IFoodPublisher {
+	
+	/** The right. */
 	private final int RIGHT = 0;
+	
+	/** The down. */
 	private final int DOWN = 90;
+	
+	/** The left. */
 	private final int LEFT = 180;
+	
+	/** The up. */
 	private final int UP = 270;
 
+	/** The speed. */
 	private int SPEED;
+	
+	/** The counter. */
 	private int counter = 0;
+	
+	/** The snake length. */
 	private int snakeLength =0;
+	
+	/** The food consumed. */
 	private int foodConsumed = 0;
 
+	/** The observer. */
 	private IScoreObserver observer;
+	
+	/** The listner. */
 	private ArrayList<IFoodListner> listner;
 
+	/**
+	 * Instantiates a new snake head.
+	 */
 	public SnakeHead() {
 		listner = new ArrayList<>();
 
@@ -24,14 +49,17 @@ public class SnakeHead extends Actor implements IFoodPublisher {
 		getImage().scale(20, 20);
 	}
 
+	/**
+	 * Render snake head.
+	 */
 	public void renderSnakeHead() {
 
 		setRotation(Greenfoot.getRandomNumber(4) * 90);
 	}
 
 	/**
-	 * Attach a Key Pad Observer
-	 * 
+	 * Attach a Key Pad Observer.
+	 *
 	 * @param obj Observer
 	 */
 	public void attach(IFoodListner obj) {
@@ -39,8 +67,8 @@ public class SnakeHead extends Actor implements IFoodPublisher {
 	}
 
 	/**
-	 * Remove Key Pad Observer
-	 * 
+	 * Remove Key Pad Observer.
+	 *
 	 * @param obj Observer
 	 */
 	public void removeObserver(IFoodListner obj) {
@@ -50,7 +78,7 @@ public class SnakeHead extends Actor implements IFoodPublisher {
 	}
 
 	/**
-	 * Notify all Observers of Update Event
+	 * Notify all Observers of Update Event.
 	 */
 	public void notifyListner() {
 		for (int i = 0; i < listner.size(); i++) {
@@ -60,6 +88,9 @@ public class SnakeHead extends Actor implements IFoodPublisher {
 		}
 	}
 
+	/**
+	 * Act.
+	 */
 	public void act() {
 		crawl();
 
@@ -112,6 +143,9 @@ public class SnakeHead extends Actor implements IFoodPublisher {
 
 	}
 
+	/**
+	 * Crawl.
+	 */
 	public void crawl() {
 		if (++counter == SPEED) {
 			getWorld().addObject(new SnakeBody(snakeLength * SPEED), getX(), getY());
@@ -137,6 +171,9 @@ public class SnakeHead extends Actor implements IFoodPublisher {
 
 	}
 
+	/**
+	 * Gameover.
+	 */
 	public void gameover() {
 		GameOver.endGame();
 
@@ -147,6 +184,11 @@ public class SnakeHead extends Actor implements IFoodPublisher {
 
 	}
 
+	/**
+	 * Sets the speed.
+	 *
+	 * @param speed the new speed
+	 */
 	public void setSpeed(int speed) {
 		this.SPEED = speed;
 	}
