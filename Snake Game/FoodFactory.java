@@ -24,7 +24,7 @@ public class FoodFactory extends Creators {
         final String fries = Fries.class.getName();
         
         
-        switch(city.getFood().get(num)){
+        switch(city.getFood().get(num).toString()){
                 case "pizza": return new Pizza();
                 
                 
