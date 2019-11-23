@@ -61,7 +61,8 @@ Enter-- Super Hero Snake!!!! He is here to eat all the food monsters and save th
 
 ### [A peek into one of our stand-up meetings](https://youtu.be/6d8G0HvwsAU)
 ### [War Room timelapse](https://youtu.be/rTMK5nJpflw)
-### [Retrospective meeting]
+### [Retrospective]
+![Retrospective](https://github.com/nguyensjsu/fa19-202-gangofive/blob/master/images/retro.png)
 
 We tracked issues in project dashboard as:
  * TO-DO
