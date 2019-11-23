@@ -1,5 +1,6 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
+// TODO: Auto-generated Javadoc
 /**
  * Write a description of class SelectionScreen here.
  * 
@@ -8,6 +9,8 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class LoadingScreen extends World
 {
+    
+    /** The timer. */
     private SimpleTimer timer;
     /**
      * Constructor for objects of class SelectionScreen.
@@ -22,6 +25,9 @@ public class LoadingScreen extends World
         addObject(new Label("GangOFive Presents",50),278,25);
     }
     
+    /**
+     * Act.
+     */
     public void act(){
         if(timer.millisElapsed() > 5000){
         timer.mark();
