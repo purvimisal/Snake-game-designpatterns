@@ -14,7 +14,6 @@ public class GifImage {
      private int[] delay;
      private int currentIndex;
      private long time;
-     private GreenfootImage image; 
 
     public GifImage(String file)
     {
@@ -150,12 +149,279 @@ public class GifImage {
             return status;
         }
 
+        protected void readImage() {
+            ix = readShort(); // (sub)image position & size
+            iy = readShort();
+            iw = readShort();
+            ih = readShort();
+
+            int packed = read();
+            lctFlag = (packed & 0x80) != 0; // 1 - local color table flag
+            interlace = (packed & 0x40) != 0; // 2 - interlace flag
+            // 3 - sort flag
+            // 4-5 - reserved
+            lctSize = 2 << (packed & 7); // 6-8 - local color table size
+
+            if (lctFlag) {
+                lct = readColorTable(lctSize); // read table
+                act = lct; // make local table active
+            } else {
+                act = gct; // make global table active
+                if (bgIndex == transIndex)
+                    bgColor = colorFromInt(0);
+            }
+            int save = 0;
+            if (transparency) {
+                save = act[transIndex];
+                act[transIndex] = 0; // set transparent color if specified
+            }
+
+            if (act == null) {
+                status = STATUS_FORMAT_ERROR; // no color table defined
+            }
+
+            if (err())
+                return;
+
+            decodeImageData(); // decode pixel data
+            skip();
+
+            if (err())
+                return;
+
+            frameCount++;
+
+            // create new image to receive frame data
+            image = new GreenfootImage(width, height);
+
+            setPixels(); // transfer pixel data to image
+
+            frames.add(new GifFrame(image, delay)); // add image to frame list
+
+            if (transparency) {
+                act[transIndex] = save;
+            }
+            resetFrame();
+
+        }
+
+        protected void decodeImageData() {
+            int NullCode = -1;
+            int npix = iw * ih;
+            int available, clear, code_mask, code_size, end_of_information, in_code, old_code, bits, code, count, i, datum, data_size, first, top, bi, pi;
+
+            if ((pixels == null) || (pixels.length < npix)) {
+                pixels = new byte[npix]; // allocate new pixel array
+            }
+            if (prefix == null)
+                prefix = new short[MaxStackSize];
+            if (suffix == null)
+                suffix = new byte[MaxStackSize];
+            if (pixelStack == null)
+                pixelStack = new byte[MaxStackSize + 1];
+
+            // Initialize GIF data stream decoder.
+
+            data_size = read();
+            clear = 1 << data_size;
+            end_of_information = clear + 1;
+            available = clear + 2;
+            old_code = NullCode;
+            code_size = data_size + 1;
+            code_mask = (1 << code_size) - 1;
+            for (code = 0; code < clear; code++) {
+                prefix[code] = 0;
+                suffix[code] = (byte) code;
+            }
+
+            // Decode GIF pixel stream.
+
+            datum = bits = count = first = top = pi = bi = 0;
+
+            for (i = 0; i < npix;) {
+                if (top == 0) {
+                    if (bits < code_size) {
+                        // Load bytes until there are enough bits for a code.
+                        if (count == 0) {
+                            // Read a new data block.
+                            count = readBlock();
+                            if (count <= 0)
+                                break;
+                            bi = 0;
+                        }
+                        datum += (((int) block[bi]) & 0xff) << bits;
+                        bits += 8;
+                        bi++;
+                        count--;
+                        continue;
+                    }
+
+                    // Get the next code.
+
+                    code = datum & code_mask;
+                    datum >>= code_size;
+                        bits -= code_size;
+
+                        // Interpret the code
+
+                        if ((code > available) || (code == end_of_information))
+                            break;
+                        if (code == clear) {
+                            // Reset decoder.
+                            code_size = data_size + 1;
+                            code_mask = (1 << code_size) - 1;
+                            available = clear + 2;
+                            old_code = NullCode;
+                            continue;
+                        }
+                        if (old_code == NullCode) {
+                            pixelStack[top++] = suffix[code];
+                            old_code = code;
+                            first = code;
+                            continue;
+                        }
+                        in_code = code;
+                        if (code == available) {
+                            pixelStack[top++] = (byte) first;
+                            code = old_code;
+                        }
+                        while (code > clear) {
+                            pixelStack[top++] = suffix[code];
+                            code = prefix[code];
+                        }
+                        first = ((int) suffix[code]) & 0xff;
+
+                        // Add a new string to the string table,
+
+                        if (available >= MaxStackSize)
+                            break;
+                        pixelStack[top++] = (byte) first;
+                        prefix[available] = (short) old_code;
+                        suffix[available] = (byte) first;
+                        available++;
+                        if (((available & code_mask) == 0) && (available < MaxStackSize)) {
+                            code_size++;
+                            code_mask += available;
+                        }
+                        old_code = in_code;
+                }
+
+                // Pop a pixel off the pixel stack.
+
+                top--;
+                pixels[pi++] = pixelStack[top];
+                i++;
+            }
+
+            for (i = pi; i < npix; i++) {
+                pixels[i] = 0; // clear missing pixels
+            }
+
+        }
+
+
+        protected void init() {
+            status = STATUS_OK;
+            frameCount = 0;
+            frames = new ArrayList<GifFrame>();
+            gct = null;
+            lct = null;
+        }
+
+        protected int read() {
+            int curByte = 0;
+            try {
+                curByte = in.read();
+            } catch (IOException e) {
+                status = STATUS_FORMAT_ERROR;
+            }
+            return curByte;
+        }
+
         public GreenfootImage getFrame(int n) {
             GreenfootImage im = null;
             if ((n >= 0) && (n < frameCount)) {
                 im = ((GifFrame) frames.get(n)).image;
             }
             return im;
+        }
+
+
+        protected int readBlock() {
+            blockSize = read();
+            int n = 0;
+            if (blockSize > 0) {
+                try {
+                    int count = 0;
+                    while (n < blockSize) {
+                        count = in.read(block, n, blockSize - n);
+                        if (count == -1)
+                            break;
+                        n += count;
+                    }
+                } catch (IOException e) {
+                }
+
+                if (n < blockSize) {
+                    status = STATUS_FORMAT_ERROR;
+                }
+            }
+            return n;
+        }
+
+        protected int[] readColorTable(int ncolors) {
+            int nbytes = 3 * ncolors;
+            int[] tab = null;
+            byte[] c = new byte[nbytes];
+            int n = 0;
+            try {
+                n = in.read(c);
+            } catch (IOException e) {
+            }
+            if (n < nbytes) {
+                status = STATUS_FORMAT_ERROR;
+            } else {
+                tab = new int[256]; // max size to avoid bounds checks
+                int i = 0;
+                int j = 0;
+                while (i < ncolors) {
+                    int r = ((int) c[j++]) & 0xff;
+                    int g = ((int) c[j++]) & 0xff;
+                    int b = ((int) c[j++]) & 0xff;
+                    tab[i++] = 0xff000000 | (r << 16) | (g << 8) | b;
+                }
+            }
+            return tab;
+        }
+
+        protected void readGraphicControlExt() {
+            read(); // block size
+            int packed = read(); // packed fields
+            dispose = (packed & 0x1c) >> 2; // disposal method
+            if (dispose == 0) {
+                dispose = 1; // elect to keep old image if discretionary
+            }
+            transparency = (packed & 1) != 0;
+            delay = readShort() * 10; // delay in milliseconds
+            transIndex = read(); // transparent color index
+            read(); // block terminator
+        }
+
+        protected void readHeader() {
+            String id = "";
+            for (int i = 0; i < 6; i++) {
+                id += (char) read();
+            }
+            if (!id.startsWith("GIF")) {
+                status = STATUS_FORMAT_ERROR;
+                return;
+            }
+
+            readLSD();
+            if (gctFlag && !err()) {
+                gct = readColorTable(gctSize);
+                bgColor = colorFromInt(gct[bgIndex]);
+            }
         }
 
         public int read(BufferedInputStream is) {
@@ -259,6 +525,64 @@ public class GifImage {
                 }
             }
         }
+
+        protected void readLSD() {
+
+            // logical screen size
+            width = readShort();
+            height = readShort();
+
+            // packed fields
+            int packed = read();
+            gctFlag = (packed & 0x80) != 0; // 1 : global color table flag
+            // 2-4 : color resolution
+            // 5 : gct sort flag
+            gctSize = 2 << (packed & 7); // 6-8 : gct size
+
+            bgIndex = read(); // background color index
+            pixelAspect = read(); // pixel aspect ratio
+        }
+
+        protected void readNetscapeExt() {
+            do {
+                readBlock();
+                if (block[0] == 1) {
+                    // loop count sub-block
+                    int b1 = ((int) block[1]) & 0xff;
+                    int b2 = ((int) block[2]) & 0xff;
+                    loopCount = (b2 << 8) | b1;
+                }
+            } while ((blockSize > 0) && !err());
+        }
+
+        protected int readShort() {
+            // read 16-bit value, LSB first
+            return read() | (read() << 8);
+        }
+
+        protected boolean err() {
+            return status != STATUS_OK;
+        }
+
+        protected void resetFrame() {
+            lastDispose = dispose;
+            lastRect = new Rectangle(ix, iy, iw, ih);
+            lastImage = image;
+            lastBgColor = bgColor;
+            int dispose = 0;
+            boolean transparency = false;
+            int delay = 0;
+            lct = null;
+        }
+
+        protected void skip() {
+            do {
+                readBlock();
+            } while ((blockSize > 0) && !err());
+        }
+
+
+
     }
 
 }
