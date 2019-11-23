@@ -25,10 +25,14 @@ public class SelectionScreen extends World
         cities.add(new Bangalore("bangalore.gif","Bangalore"));
         addObject(new City(cities.get(index).getImage()), 300,200);
         addObject(new Label("Alaska",50),278,25);
+        addObject(new RightArrow(), 532,375);
+        addObject(new LeftArrow(), 60,373);
     }
     public void remove(){
         List objects = getObjects(null);
         removeObjects(objects);
+        addObject(new RightArrow(), 532,375);
+        addObject(new LeftArrow(), 60,373);
     }
     public void act(){
         if(Greenfoot.isKeyDown("right")){
@@ -48,7 +52,7 @@ public class SelectionScreen extends World
         }
         }
         else if(Greenfoot.isKeyDown("enter")){
-            Greenfoot.setWorld(new MyWorld(cities.get(index).getName()));
+            Greenfoot.setWorld(new MyWorld(cities.get(index)));
         }
         
     }
