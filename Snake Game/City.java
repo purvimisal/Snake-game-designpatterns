@@ -2,8 +2,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 // TODO: Auto-generated Javadoc
 /**
- * Write a description of class SFSelectionScreen here.
- * 
+
  * @author (your name) 
  * @version (a version number or a date)
  */
