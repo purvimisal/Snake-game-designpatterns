@@ -10,7 +10,8 @@ import java.util.*;
  */
 public class MyWorld extends World implements IFoodListner, ILevelObserver {
     SnakeHead snake;
-    Creators foodFactory = new FoodFactory();
+    Creators foodFactory;
+
     Creators obstacleFactory = new ObstacleFactory();
     Creators powerupFactory = new PowerupFactory();
     LevelController controller;
@@ -23,6 +24,7 @@ public class MyWorld extends World implements IFoodListner, ILevelObserver {
     int powerUpSpawnTime = 1;
     int powerUpTimer;
     ScoreCard scoreCard;
+    ICities city;
 
     public LevelController getController() {
         return controller;
@@ -48,9 +50,11 @@ public class MyWorld extends World implements IFoodListner, ILevelObserver {
     // timer = 0;
     // addScoreCard();
     // }
-    public MyWorld(String file) {
+    public MyWorld(ICities city) {
         super(30, 30, 20, false);
-        setBackgroundImage(file);
+        this.city = city;
+        foodFactory = new FoodFactory(city);
+        setBackgroundImage(city.getName());
         addSnakeHead();
         int x = Greenfoot.getRandomNumber(getWidth());
         int y = Greenfoot.getRandomNumber(getHeight());
