@@ -1,20 +1,39 @@
+import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
+ * This class can be used to read animated gif image files and extract the individual
+ * images of the animation sequence.
  * 
- * Class to handle GIF images for the game
+ * @author Michael Berry
+ * @author Neil Brown
+ * 
+ * Copyright (c) 2011,2013,2014,2018
  */
-
-public class GifImage {
-
+public class GifImage
+{
+    /** The images used in the animation. */
+    private GreenfootImage[] images;
+    /** The delay between each frame. */
+    private int[] delay;
+    /** The index of the current frame in the GIF file. */
+    private int currentIndex;
+    /** The time passed since the last frame in ms. */
+    private long time;
+    /** The GIF file that contains the animation. */
     private String file;
+    /** Whether the animation is paused or not. */
     private boolean pause;
-     private GreenfootImage[] images;
-     private int[] delay;
-     private int currentIndex;
-     private long time;
 
+    /**
+     * Set the image of the actor. If the image is a normal picture, it will be displayed as normal.
+     * If it's an animated GIF file then it will be displayed as an animated actor.
+     */
     public GifImage(String file)
     {
         this.file = file;
@@ -30,6 +49,10 @@ public class GifImage {
         }
     }
 
+    /**
+     * Get all the images used in the animation
+     * @return a list of GreenfootImages, corresponding to each frame.
+     */
     public List<GreenfootImage> getImages()
     {
         ArrayList<GreenfootImage> images = new ArrayList<GreenfootImage>(this.images.length);
@@ -39,17 +62,27 @@ public class GifImage {
         return images;
     }
 
+    /**
+     * Pause the animation.
+     */
     public void pause()
     {
         pause = true;
     }
 
+    /**
+     * Resume the animation.
+     */
     public void resume()
     {
         pause = false;
         time = System.currentTimeMillis();
     }
 
+    /**
+     * Determines whether the animation is running
+     * @return true if the animation is running, false otherwise
+     */
     public boolean isRunning()
     {
         return !pause;
@@ -67,6 +100,9 @@ public class GifImage {
         return images[currentIndex];
     }
 
+    /**
+     * Load the images
+     */
     private void loadImages()
     {
         GifDecoder decode = new GifDecoder();
@@ -90,6 +126,10 @@ public class GifImage {
         time = System.currentTimeMillis();
     }
 
+    /**
+     * The Rectangle class represents rectangles. This is essentially a re-implementation
+     * of the java.awt.Rectangle class, created in order to avoid any dependency on AWT.
+     */
     private static class Rectangle
     {
         public int x;
@@ -105,75 +145,114 @@ public class GifImage {
             this.height = height;
         }
     }
-
     
-
-    private class GifDecoder {
-
+    /**
+     * Class GifDecoder - Decodes a GIF file into one or more frames. <br><br>
+     * 
+     * <i>I (Michael) edited this slightly on 10/09/08 to bring class up to date with generics and therefore remove warnings.
+     * Also edited so that resources are grabbed from the jar file and not externally, so no security exceptions.</i>
+     * <br><br>
+     * <pre>
+     *  Example:
+     *     GifDecoder d = new GifDecoder();
+     *     d.read(&quot;sample.gif&quot;);
+     *     int n = d.getFrameCount();
+     *     for (int i = 0; i &lt; n; i++) {
+     *        BufferedImage frame = d.getFrame(i);  // frame i
+     *        int t = d.getDelay(i);  // display duration of frame in milliseconds
+     *        // do something with frame
+     *     }
+     * </pre>
+     * 
+     * No copyright asserted on the source code of this class. May be used for any
+     * purpose, however, refer to the Unisys LZW patent for any additional
+     * restrictions. Please forward any corrections to kweiner@fmsware.com.
+     * 
+     * @author Kevin Weiner, FM Software; LZW decoder adapted from John Cristy's
+     *         ImageMagick.
+     * @version 1.03 November 2003
+     * 
+     */
+    private class GifDecoder
+    {
+        /**
+         * File read status: No errors.
+         */
         public static final int STATUS_OK = 0;
 
+        /**
+         * File read status: Error decoding file (may be partially decoded)
+         */
         public static final int STATUS_FORMAT_ERROR = 1;
 
+        /**
+         * File read status: Unable to open source.
+         */
         public static final int STATUS_OPEN_ERROR = 2;
 
         private BufferedInputStream in;
 
         private int status;
 
-        private int width; 
+        private int width; // full image width
 
-        private int height; 
+        private int height; // full image height
 
-        private boolean gctFlag; 
+        private boolean gctFlag; // global color table used
 
-        private int gctSize; 
+        private int gctSize; // size of global color table
 
-        private int loopCount = 1;
+        private int loopCount = 1; // iterations; 0 = repeat forever
 
-        private int[] gct; 
+        private int[] gct; // global color table
 
-        private int[] lct; 
+        private int[] lct; // local color table
 
-        private int[] act; 
+        private int[] act; // active color table
 
-        private int bgIndex; 
+        private int bgIndex; // background color index
 
-        private Color bgColor; 
+        private Color bgColor; // background color
 
-        private Color lastBgColor; 
+        private Color lastBgColor; // previous bg color
 
-        private int pixelAspect; 
+        private int pixelAspect; // pixel aspect ratio
 
-        private boolean lctFlag; 
+        private boolean lctFlag; // local color table flag
 
-        private boolean interlace; 
+        private boolean interlace; // interlace flag
 
-        private int lctSize; 
+        private int lctSize; // local color table size
 
-        private int ix, iy, iw, ih; 
+        private int ix, iy, iw, ih; // current image rectangle
 
-        private Rectangle lastRect; 
+        private Rectangle lastRect; // last image rect
 
-        private GreenfootImage image; 
+        private GreenfootImage image; // current frame
 
-        private GreenfootImage lastImage; 
+        private GreenfootImage lastImage; // previous frame
 
-        private byte[] block = new byte[256]; 
+        private byte[] block = new byte[256]; // current data block
 
-        private int blockSize = 0; 
+        private int blockSize = 0; // block size
 
+        // last graphic control extension info
         private int dispose = 0;
 
+        // 0=no action; 1=leave in place; 2=restore to bg; 3=restore to prev
         private int lastDispose = 0;
 
-        private boolean transparency = false;
+        private boolean transparency = false; // use transparent color
 
-        private int delay = 0; 
+        private int delay = 0; // delay in milliseconds
 
-        private int transIndex; 
+        private int transIndex; // transparent color index
 
         private static final int MaxStackSize = 4096;
 
+        // max decoder pixel stack size
+
+        // LZW decoder working arrays
         private short[] prefix;
 
         private byte[] suffix;
@@ -182,20 +261,27 @@ public class GifImage {
 
         private byte[] pixels;
 
-        private ArrayList<GifFrame> frames; 
+        private ArrayList<GifFrame> frames; // frames read from current file
+
         private int frameCount;
 
+        /**
+         * A single frame
+         */
         private class GifFrame {
             public GifFrame(GreenfootImage im, int del) {
                 image = im;
                 delay = del;
             }
-    
+
             private GreenfootImage image;
-    
+
             private int delay;
         }
 
+        /**
+         * Convert an RGB integer value to a Color.
+         */
         private Color colorFromInt(int rgb)
         {
             int r = (rgb & 0xFF0000) >> 16;
@@ -203,7 +289,14 @@ public class GifImage {
             int b = (rgb & 0xFF);
             return new Color(r,g,b);
         }
-
+        
+        /**
+         * Gets display duration for specified frame.
+         * 
+         * @param n
+         *          int index of frame
+         * @return delay in milliseconds
+         */
         public int getDelay(int n) {
             //
             delay = -1;
@@ -212,7 +305,207 @@ public class GifImage {
             }
             return delay;
         }
-        
+
+        /**
+         * Gets the number of frames read from file.
+         * 
+         * @return frame count
+         */
+        public int getFrameCount() {
+            return frameCount;
+        }
+
+        /**
+         * Gets the first (or only) image read.
+         * 
+         * @return BufferedImage containing first frame, or null if none.
+         */
+        public GreenfootImage getImage() {
+            return getFrame(0);
+        }
+
+        /**
+         * Gets the "Netscape" iteration count, if any. A count of 0 means repeat
+         * indefinitiely.
+         * 
+         * @return iteration count if one was specified, else 1.
+         */
+        public int getLoopCount() {
+            return loopCount;
+        }
+
+        /**
+         * Creates new frame image from current data (and previous frames as specified
+         * by their disposition codes).
+         */
+        protected void setPixels() {
+            // fill in starting image contents based on last image's dispose code
+            if (lastDispose > 0) {
+                if (lastDispose == 3) {
+                    // use image before last
+                    int n = frameCount - 2;
+                    if (n > 0) {
+                        lastImage = getFrame(n - 1);
+                    } else {
+                        lastImage = null;
+                    }
+                }
+
+                if (lastImage != null) {
+                    image.clear();
+                    image.drawImage(lastImage, 0, 0);
+                    
+                    // copy pixels
+
+                    if (lastDispose == 2) {
+                        // fill last image rect area with background color
+                        Color c = null;
+                        if (transparency) {
+                            c = new Color(0, 0, 0, 0); // assume background is transparent
+                        } else {
+                            c = lastBgColor; // use given background color
+                        }
+                        for (int x = 0; x < lastRect.width; x++)
+                        {
+                            for (int y = 0; y < lastRect.height; y++)
+                            {
+                                image.setColorAt(lastRect.x + x, lastRect.y + y, c);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // copy each source line to the appropriate place in the destination
+            int pass = 1;
+            int inc = 8;
+            int iline = 0;
+            for (int i = 0; i < ih; i++) {
+                int line = i;
+                if (interlace) {
+                    if (iline >= ih) {
+                        pass++;
+                        switch (pass) {
+                        case 2:
+                            iline = 4;
+                            break;
+                        case 3:
+                            iline = 2;
+                            inc = 4;
+                            break;
+                        case 4:
+                            iline = 1;
+                            inc = 2;
+                        }
+                    }
+                    line = iline;
+                    iline += inc;
+                }
+                line += iy;
+                if (line < height) {
+                    int k = line * width;
+                    int dlim = Math.min(ix + iw, width);
+                    int sx = i * iw;
+                    
+                    for (int dx = ix; dx < dlim; dx++) {
+                        int index = ((int) pixels[sx++]) & 0xff;
+                        int c = act[index];
+                        if (c != 0) {
+                            image.setColorAt(dx, line, colorFromInt(c));
+                        }
+                    }
+                }
+            }
+        }
+
+        /**
+         * Gets the image contents of frame n.
+         * 
+         * @return BufferedImage representation of frame, or null if n is invalid.
+         */
+        public GreenfootImage getFrame(int n) {
+            GreenfootImage im = null;
+            if ((n >= 0) && (n < frameCount)) {
+                im = ((GifFrame) frames.get(n)).image;
+            }
+            return im;
+        }
+
+        /**
+         * Gets image size.
+         * 
+         * @return GIF image dimensions as an array - [0] = width, [1] = height
+         */
+        public int[] getFrameSize() {
+            return new int[]{width, height};
+        }
+
+        /**
+         * Reads GIF image from stream
+         * 
+         * @param BufferedInputStream
+         *          containing GIF file.
+         * @return read status code (0 = no errors)
+         */
+        public int read(BufferedInputStream is) {
+            init();
+            if (is != null) {
+                in = is;
+                readHeader();
+                if (!err()) {
+                    readContents();
+                    if (frameCount < 0) {
+                        status = STATUS_FORMAT_ERROR;
+                    }
+                }
+            } else {
+                status = STATUS_OPEN_ERROR;
+            }
+            try {
+                is.close();
+            } catch (IOException e) {
+            }
+            return status;
+        }
+
+        /**
+         * Reads GIF image from stream
+         * 
+         * @param InputStream
+         *          containing GIF file.
+         * @return read status code (0 = no errors)
+         */
+        public int read(InputStream is) {
+            init();
+            if (is != null) {
+                if (!(is instanceof BufferedInputStream))
+                    is = new BufferedInputStream(is);
+                in = (BufferedInputStream) is;
+                readHeader();
+                if (!err()) {
+                    readContents();
+                    if (frameCount < 0) {
+                        status = STATUS_FORMAT_ERROR;
+                    }
+                }
+            } else {
+                status = STATUS_OPEN_ERROR;
+            }
+            try {
+                is.close();
+            } catch (IOException e) {
+            }
+            return status;
+        }
+
+        /**
+         * Reads GIF file from specified file/URL source (URL assumed if name contains
+         * ":/" or "file:")
+         * 
+         * @param name
+         *          String containing source
+         * @return read status code (0 = no errors)
+         */
         public int read(String name) {
             status = STATUS_OK;
             InputStream resource = this.getClass().getResourceAsStream(name);
@@ -229,62 +522,10 @@ public class GifImage {
             return status;
         }
 
-        protected void readImage() {
-            ix = readShort(); // (sub)image position & size
-            iy = readShort();
-            iw = readShort();
-            ih = readShort();
-
-            int packed = read();
-            lctFlag = (packed & 0x80) != 0; // 1 - local color table flag
-            interlace = (packed & 0x40) != 0; // 2 - interlace flag
-            // 3 - sort flag
-            // 4-5 - reserved
-            lctSize = 2 << (packed & 7); // 6-8 - local color table size
-
-            if (lctFlag) {
-                lct = readColorTable(lctSize); // read table
-                act = lct; // make local table active
-            } else {
-                act = gct; // make global table active
-                if (bgIndex == transIndex)
-                    bgColor = colorFromInt(0);
-            }
-            int save = 0;
-            if (transparency) {
-                save = act[transIndex];
-                act[transIndex] = 0; // set transparent color if specified
-            }
-
-            if (act == null) {
-                status = STATUS_FORMAT_ERROR; // no color table defined
-            }
-
-            if (err())
-                return;
-
-            decodeImageData(); // decode pixel data
-            skip();
-
-            if (err())
-                return;
-
-            frameCount++;
-
-            // create new image to receive frame data
-            image = new GreenfootImage(width, height);
-
-            setPixels(); // transfer pixel data to image
-
-            frames.add(new GifFrame(image, delay)); // add image to frame list
-
-            if (transparency) {
-                act[transIndex] = save;
-            }
-            resetFrame();
-
-        }
-
+        /**
+         * Decodes LZW image data into pixel array. Adapted from John Cristy's
+         * ImageMagick.
+         */
         protected void decodeImageData() {
             int NullCode = -1;
             int npix = iw * ih;
@@ -399,7 +640,16 @@ public class GifImage {
 
         }
 
+        /**
+         * Returns true if an error was encountered during reading/decoding
+         */
+        protected boolean err() {
+            return status != STATUS_OK;
+        }
 
+        /**
+         * Initializes or re-initializes reader
+         */
         protected void init() {
             status = STATUS_OK;
             frameCount = 0;
@@ -408,6 +658,9 @@ public class GifImage {
             lct = null;
         }
 
+        /**
+         * Reads a single byte from the input stream.
+         */
         protected int read() {
             int curByte = 0;
             try {
@@ -418,19 +671,11 @@ public class GifImage {
             return curByte;
         }
 
-        public GreenfootImage getFrame(int n) {
-            GreenfootImage im = null;
-            if ((n >= 0) && (n < frameCount)) {
-                im = ((GifFrame) frames.get(n)).image;
-            }
-            return im;
-        }
-
-        public int[] getFrameSize() {
-            return new int[]{width, height};
-        }
-
-
+        /**
+         * Reads next variable length block from input.
+         * 
+         * @return number of bytes stored in "buffer"
+         */
         protected int readBlock() {
             blockSize = read();
             int n = 0;
@@ -453,6 +698,13 @@ public class GifImage {
             return n;
         }
 
+        /**
+         * Reads color table as 256 RGB integer values
+         * 
+         * @param ncolors
+         *          int number of colors to read
+         * @return int array containing 256 colors (packed ARGB with full alpha)
+         */
         protected int[] readColorTable(int ncolors) {
             int nbytes = 3 * ncolors;
             int[] tab = null;
@@ -478,200 +730,9 @@ public class GifImage {
             return tab;
         }
 
-        protected void readGraphicControlExt() {
-            read(); // block size
-            int packed = read(); // packed fields
-            dispose = (packed & 0x1c) >> 2; // disposal method
-            if (dispose == 0) {
-                dispose = 1; // elect to keep old image if discretionary
-            }
-            transparency = (packed & 1) != 0;
-            delay = readShort() * 10; // delay in milliseconds
-            transIndex = read(); // transparent color index
-            read(); // block terminator
-        }
-
-        protected void readHeader() {
-            String id = "";
-            for (int i = 0; i < 6; i++) {
-                id += (char) read();
-            }
-            if (!id.startsWith("GIF")) {
-                status = STATUS_FORMAT_ERROR;
-                return;
-            }
-
-            readLSD();
-            if (gctFlag && !err()) {
-                gct = readColorTable(gctSize);
-                bgColor = colorFromInt(gct[bgIndex]);
-            }
-        }
-
-        public int read(InputStream is) {
-            init();
-            if (is != null) {
-                if (!(is instanceof BufferedInputStream))
-                    is = new BufferedInputStream(is);
-                in = (BufferedInputStream) is;
-                readHeader();
-                if (!err()) {
-                    readContents();
-                    if (frameCount < 0) {
-                        status = STATUS_FORMAT_ERROR;
-                    }
-                }
-            } else {
-                status = STATUS_OPEN_ERROR;
-            }
-            try {
-                is.close();
-            } catch (IOException e) {
-            }
-            return status;
-        }
-
-        public int read(BufferedInputStream is) {
-            init();
-            if (is != null) {
-                in = is;
-                readHeader();
-                if (!err()) {
-                    readContents();
-                    if (frameCount < 0) {
-                        status = STATUS_FORMAT_ERROR;
-                    }
-                }
-            } else {
-                status = STATUS_OPEN_ERROR;
-            }
-            try {
-                is.close();
-            } catch (IOException e) {
-            }
-            return status;
-        }
-
-        public int getFrameCount() {
-            return frameCount;
-        }
-
-        public GreenfootImage getImage() {
-            return getFrame(0);
-        }
-
-        public int getLoopCount() {
-            return loopCount;
-        }
-
-        protected void setPixels() {
-            // fill in starting image contents based on last image's dispose code
-            if (lastDispose > 0) {
-                if (lastDispose == 3) {
-                    // use image before last
-                    int n = frameCount - 2;
-                    if (n > 0) {
-                        lastImage = getFrame(n - 1);
-                    } else {
-                        lastImage = null;
-                    }
-                }
-
-                if (lastImage != null) {
-                    image.clear();
-                    image.drawImage(lastImage, 0, 0);
-                    
-                    // copy pixels
-
-                    if (lastDispose == 2) {
-                        // fill last image rect area with background color
-                        Color c = null;
-                        if (transparency) {
-                            c = new Color(0, 0, 0, 0); // assume background is transparent
-                        } else {
-                            c = lastBgColor; // use given background color
-                        }
-                        for (int x = 0; x < lastRect.width; x++)
-                        {
-                            for (int y = 0; y < lastRect.height; y++)
-                            {
-                                image.setColorAt(lastRect.x + x, lastRect.y + y, c);
-                            }
-                        }
-                    }
-                }
-            }
-
-            // copy each source line to the appropriate place in the destination
-            int pass = 1;
-            int inc = 8;
-            int iline = 0;
-            for (int i = 0; i < ih; i++) {
-                int line = i;
-                if (interlace) {
-                    if (iline >= ih) {
-                        pass++;
-                        switch (pass) {
-                        case 2:
-                            iline = 4;
-                            break;
-                        case 3:
-                            iline = 2;
-                            inc = 4;
-                            break;
-                        case 4:
-                            iline = 1;
-                            inc = 2;
-                        }
-                    }
-                    line = iline;
-                    iline += inc;
-                }
-                line += iy;
-                if (line < height) {
-                    int k = line * width;
-                    int dlim = Math.min(ix + iw, width);
-                    int sx = i * iw;
-                    
-                    for (int dx = ix; dx < dlim; dx++) {
-                        int index = ((int) pixels[sx++]) & 0xff;
-                        int c = act[index];
-                        if (c != 0) {
-                            image.setColorAt(dx, line, colorFromInt(c));
-                        }
-                    }
-                }
-            }
-        }
-
-
-        protected void init() {
-            status = STATUS_OK;
-            frameCount = 0;
-            frames = new ArrayList<GifFrame>();
-            gct = null;
-            lct = null;
-        }
-
-        protected void readHeader() {
-            String id = "";
-            for (int i = 0; i < 6; i++) {
-                id += (char) read();
-            }
-            if (!id.startsWith("GIF")) {
-                status = STATUS_FORMAT_ERROR;
-                return;
-            }
-
-            readLSD();
-            if (gctFlag && !err()) {
-                gct = readColorTable(gctSize);
-                bgColor = colorFromInt(gct[bgIndex]);
-            }
-        }
-
-      
-
+        /**
+         * Main file parser. Reads GIF content blocks.
+         */
         protected void readContents() {
             // read GIF file content blocks
             boolean done = false;
@@ -720,6 +781,104 @@ public class GifImage {
             }
         }
 
+        /**
+         * Reads Graphics Control Extension values
+         */
+        protected void readGraphicControlExt() {
+            read(); // block size
+            int packed = read(); // packed fields
+            dispose = (packed & 0x1c) >> 2; // disposal method
+            if (dispose == 0) {
+                dispose = 1; // elect to keep old image if discretionary
+            }
+            transparency = (packed & 1) != 0;
+            delay = readShort() * 10; // delay in milliseconds
+            transIndex = read(); // transparent color index
+            read(); // block terminator
+        }
+
+        /**
+         * Reads GIF file header information.
+         */
+        protected void readHeader() {
+            String id = "";
+            for (int i = 0; i < 6; i++) {
+                id += (char) read();
+            }
+            if (!id.startsWith("GIF")) {
+                status = STATUS_FORMAT_ERROR;
+                return;
+            }
+
+            readLSD();
+            if (gctFlag && !err()) {
+                gct = readColorTable(gctSize);
+                bgColor = colorFromInt(gct[bgIndex]);
+            }
+        }
+
+        /**
+         * Reads next frame image
+         */
+        protected void readImage() {
+            ix = readShort(); // (sub)image position & size
+            iy = readShort();
+            iw = readShort();
+            ih = readShort();
+
+            int packed = read();
+            lctFlag = (packed & 0x80) != 0; // 1 - local color table flag
+            interlace = (packed & 0x40) != 0; // 2 - interlace flag
+            // 3 - sort flag
+            // 4-5 - reserved
+            lctSize = 2 << (packed & 7); // 6-8 - local color table size
+
+            if (lctFlag) {
+                lct = readColorTable(lctSize); // read table
+                act = lct; // make local table active
+            } else {
+                act = gct; // make global table active
+                if (bgIndex == transIndex)
+                    bgColor = colorFromInt(0);
+            }
+            int save = 0;
+            if (transparency) {
+                save = act[transIndex];
+                act[transIndex] = 0; // set transparent color if specified
+            }
+
+            if (act == null) {
+                status = STATUS_FORMAT_ERROR; // no color table defined
+            }
+
+            if (err())
+                return;
+
+            decodeImageData(); // decode pixel data
+            skip();
+
+            if (err())
+                return;
+
+            frameCount++;
+
+            // create new image to receive frame data
+            image = new GreenfootImage(width, height);
+
+            setPixels(); // transfer pixel data to image
+
+            frames.add(new GifFrame(image, delay)); // add image to frame list
+
+            if (transparency) {
+                act[transIndex] = save;
+            }
+            resetFrame();
+
+        }
+
+        /**
+         * Reads Logical Screen Descriptor
+         */
         protected void readLSD() {
 
             // logical screen size
@@ -737,6 +896,9 @@ public class GifImage {
             pixelAspect = read(); // pixel aspect ratio
         }
 
+        /**
+         * Reads Netscape extenstion to obtain iteration count
+         */
         protected void readNetscapeExt() {
             do {
                 readBlock();
@@ -749,15 +911,17 @@ public class GifImage {
             } while ((blockSize > 0) && !err());
         }
 
+        /**
+         * Reads next 16-bit value, LSB first
+         */
         protected int readShort() {
             // read 16-bit value, LSB first
             return read() | (read() << 8);
         }
 
-        protected boolean err() {
-            return status != STATUS_OK;
-        }
-
+        /**
+         * Resets frame state for reading next image.
+         */
         protected void resetFrame() {
             lastDispose = dispose;
             lastRect = new Rectangle(ix, iy, iw, ih);
@@ -769,14 +933,14 @@ public class GifImage {
             lct = null;
         }
 
+        /**
+         * Skips variable length blocks up to and including next zero length block.
+         */
         protected void skip() {
             do {
                 readBlock();
             } while ((blockSize > 0) && !err());
         }
-
-
-
     }
 
 }
