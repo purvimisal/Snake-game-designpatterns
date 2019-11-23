@@ -83,6 +83,7 @@ public class MyWorld extends World implements IFoodListner, ILevelObserver {
         scoreCard = new ScoreCard();
         controller.attach(this);
         controller.changeToLevel1();
+        //Registering the Level Listener to observe the Scorecard
         scoreCard.registerObserver(controller);
         timer = 0;
         powerUpTimer = 0;
